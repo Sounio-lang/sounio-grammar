@@ -1,0 +1,21 @@
+{
+  "name": "sounio-grammar",
+  "displayName": "Sounio Language Grammar",
+  "description": "TextMate grammar for the Sounio programming language",
+  "version": "0.1.0",
+  "publisher": "sounio-lang",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sounio-lang/sounio-grammar"
+  },
+  "license": "MIT",
+  "contributes": {
+    "grammars": [
+      {
+        "language": "sounio",
+        "scopeName": "source.sounio",
+        "path": "./sounio.tmLanguage.json"
+      }
+    ]
+  }
+}
