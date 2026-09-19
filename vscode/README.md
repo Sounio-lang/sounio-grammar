@@ -61,3 +61,19 @@ or an equivalent gate passes.
 ## License
 
 Dual-licensed under MIT OR Apache-2.0. See `LICENSE`.
+
+### Compiler settings during migration
+
+All CLI actions (run, check, IR views and REPL) and the LSP use the same
+compiler selection. An explicitly configured `sounio.serverPath` takes
+precedence over the older `sounio.soucPath`; otherwise `souc` is resolved
+through PATH. `sounio.stdlibPath` sets `SOUNIO_STDLIB_PATH` for these processes;
+leave it empty to use the installed distribution's default. CLI arguments are
+passed directly to the executable, so file and installation paths are not
+interpolated into a shell command. Restart the language server after changing
+its executable or stdlib setting.
+
+The second client's check-on-save fallback and Rust-ism detector are still
+under review. Its blanket semicolon warning must not be carried over as a
+language rule. Its syntax snippets and epistemic UI also require explicit
+reconciliation before this preview replaces either in-tree extension.

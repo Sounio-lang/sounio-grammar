@@ -127,6 +127,16 @@
           "type": "boolean",
           "default": false,
           "description": "Show provenance info in hover tooltips"
+        },
+        "sounio.soucPath": {
+          "type": "string",
+          "default": "",
+          "description": "Compatibility compiler path. An explicit sounio.serverPath takes precedence."
+        },
+        "sounio.stdlibPath": {
+          "type": "string",
+          "default": "",
+          "description": "Optional stdlib directory passed as SOUNIO_STDLIB_PATH. Empty preserves the installed compiler default."
         }
       }
     },

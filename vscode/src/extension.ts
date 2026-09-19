@@ -9,23 +9,38 @@ import {
 let client: LanguageClient | undefined;
 let statusBarItem: vscode.StatusBarItem | undefined;
 
-// Use the selected installed compiler. Explicit settings must not silently fall
-// back to a different compiler in the opened project.
-function resolveSoucPath(configured: string): string {
-    return configured || 'souc';
+// Preserve the previous client's setting while preferring an explicit serverPath.
+function compilerPath(): string {
+    const config = vscode.workspace.getConfiguration('sounio');
+    const inspected = config.inspect<string>('serverPath');
+    const explicit = inspected?.workspaceFolderValue ?? inspected?.workspaceValue ?? inspected?.globalValue;
+    return explicit || config.get<string>('soucPath', '') || 'souc';
+}
+
+function compilerEnvironment(): { [key: string]: string | undefined } {
+    const stdlib = vscode.workspace.getConfiguration('sounio').get<string>('stdlibPath', '');
+    return stdlib ? { ...process.env, SOUNIO_STDLIB_PATH: stdlib } : { ...process.env };
+}
+
+function runCompiler(name: string, args: string[]): void {
+    const terminal = vscode.window.createTerminal({
+        name, shellPath: compilerPath(), shellArgs: args,
+        env: compilerEnvironment()
+    });
+    terminal.show();
 }
 
 export function activate(context: vscode.ExtensionContext) {
     // Get server path from configuration
     const config = vscode.workspace.getConfiguration('sounio');
-    const configuredPath = config.get<string>('serverPath', 'souc');
-    const serverPath = resolveSoucPath(configuredPath);
+    const serverPath = compilerPath();
 
     // Server options - run LSP via 'souc lsp'
     const serverOptions: ServerOptions = {
         command: serverPath,
         args: ['lsp', '--stdio'],
-        transport: TransportKind.stdio
+        transport: TransportKind.stdio,
+        options: { env: compilerEnvironment() }
     };
 
     // Client options
@@ -78,9 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                const terminal = getOrCreateTerminal('Sounio');
-                terminal.show();
-                terminal.sendText(`souc run "${filePath}"`);
+                runCompiler('Sounio', ['run', filePath]);
             }
         })
     );
@@ -90,9 +103,7 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                const terminal = getOrCreateTerminal('Sounio JIT');
-                terminal.show();
-                terminal.sendText(`souc run --jit "${filePath}"`);
+                runCompiler('Sounio JIT', ['run', '--jit', filePath]);
             }
         })
     );
@@ -102,9 +113,7 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                const terminal = getOrCreateTerminal('Sounio Check');
-                terminal.show();
-                terminal.sendText(`souc check "${filePath}"`);
+                runCompiler('Sounio Check', ['check', filePath]);
             }
         })
     );
@@ -204,9 +213,7 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                const terminal = getOrCreateTerminal('Sounio HIR');
-                terminal.show();
-                terminal.sendText(`souc check "${filePath}" --show-hir`);
+                runCompiler('Sounio HIR', ['check', filePath, '--show-hir']);
             }
         })
     );
@@ -216,9 +223,7 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                const terminal = getOrCreateTerminal('Sounio HLIR');
-                terminal.show();
-                terminal.sendText(`souc check "${filePath}" --show-hlir`);
+                runCompiler('Sounio HLIR', ['check', filePath, '--show-hlir']);
             }
         })
     );
@@ -228,9 +233,7 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                const terminal = getOrCreateTerminal('Sounio AST');
-                terminal.show();
-                terminal.sendText(`souc check "${filePath}" --show-ast`);
+                runCompiler('Sounio AST', ['check', filePath, '--show-ast']);
             }
         })
     );
@@ -308,12 +311,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.commands.registerCommand('sounio.startRepl', async () => {
-            const terminal = vscode.window.createTerminal({
-                name: 'Sounio REPL',
-                shellPath: 'souc',
-                shellArgs: ['repl']
-            });
-            terminal.show();
+            runCompiler('Sounio REPL', ['repl']);
         })
     );
 
@@ -527,15 +525,6 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
     }
-}
-
-// Get or create a named terminal
-function getOrCreateTerminal(name: string): vscode.Terminal {
-    const existing = vscode.window.terminals.find(t => t.name === name);
-    if (existing) {
-        return existing;
-    }
-    return vscode.window.createTerminal(name);
 }
 
 // Update status bar item
