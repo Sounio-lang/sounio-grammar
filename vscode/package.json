@@ -137,6 +137,11 @@
           "type": "string",
           "default": "",
           "description": "Optional stdlib directory passed as SOUNIO_STDLIB_PATH. Empty preserves the installed compiler default."
+        },
+        "sounio.lsp.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Start the language server on activation. Reload the window after changing this setting. CLI commands remain available when disabled."
         }
       }
     },

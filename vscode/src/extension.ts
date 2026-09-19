@@ -80,10 +80,18 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(
         vscode.commands.registerCommand('sounio.restartServer', async () => {
+            if (!vscode.workspace.getConfiguration('sounio').get<boolean>('lsp.enabled', true)) {
+                void vscode.window.showInformationMessage('Enable sounio.lsp.enabled to start the language server.');
+                return;
+            }
             if (client) {
-                await client.stop();
-                await client.start();
-                vscode.window.showInformationMessage('Sounio language server restarted');
+                try {
+                    await client.stop();
+                    await client.start();
+                    void vscode.window.showInformationMessage('Sounio language server restarted');
+                } catch (error) {
+                    void vscode.window.showErrorMessage(`Sounio language server restart failed: ${String(error)}`);
+                }
             }
         })
     );
@@ -462,22 +470,30 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
-    // Start the client
-    client.start();
+    // A missing or unsupported LSP must not leave an unhandled rejection.
+    // CLI actions remain available independently of the language server.
+    if (config.get<boolean>('lsp.enabled', true)) {
+        void client.start().catch((error: unknown) => {
+            void vscode.window.showWarningMessage(
+                `Sounio language server could not start: ${String(error)}. Run and Check remain available.`
+            );
+        });
+    }
+    context.subscriptions.push(highConfidenceDecoration, mediumConfidenceDecoration, lowConfidenceDecoration);
 
     // Update decorations when document changes
-    vscode.workspace.onDidChangeTextDocument(event => {
+    context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(event => {
         const editor = vscode.window.activeTextEditor;
         if (editor && event.document === editor.document) {
             updateEpistemicDecorations(editor);
         }
-    });
+    }));
 
-    vscode.window.onDidChangeActiveTextEditor(editor => {
+    context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(editor => {
         if (editor) {
             updateEpistemicDecorations(editor);
         }
-    });
+    }));
 
     // Helper function to update decorations
     async function updateEpistemicDecorations(editor: vscode.TextEditor) {
@@ -487,7 +503,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // Request epistemic info from LSP
-        if (client && editor.document.languageId === 'sounio') {
+        if (client?.isRunning() && editor.document.languageId === 'sounio') {
             try {
                 const result = await client.sendRequest<any>('sounio/epistemicAnnotations', {
                     textDocument: { uri: editor.document.uri.toString() }
