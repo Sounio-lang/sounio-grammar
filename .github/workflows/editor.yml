@@ -1,0 +1,25 @@
+name: Editor contract
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: vscode
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: vscode/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run compile
+      - run: npx --no-install vsce package --out sounio-preview.vsix
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sounio-editor-preview
+          path: vscode/sounio-preview.vsix
