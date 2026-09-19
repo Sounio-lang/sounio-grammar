@@ -1,3 +1,4 @@
+import { createDiagnostics } from './diagnostics';
 import * as vscode from 'vscode';
 import {
     LanguageClient,
@@ -34,6 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
     // Get server path from configuration
     const config = vscode.workspace.getConfiguration('sounio');
     const serverPath = compilerPath();
+    const checkDocument = createDiagnostics(context, compilerPath, compilerEnvironment);
 
     // Server options - run LSP via 'souc lsp'
     const serverOptions: ServerOptions = {
@@ -121,7 +123,8 @@ export function activate(context: vscode.ExtensionContext) {
             const editor = vscode.window.activeTextEditor;
             if (editor && editor.document.languageId === 'sounio') {
                 const filePath = editor.document.fileName;
-                runCompiler('Sounio Check', ['check', filePath]);
+                if (editor.document.isDirty && !(await editor.document.save())) { return; }
+                checkDocument(editor.document);
             }
         })
     );

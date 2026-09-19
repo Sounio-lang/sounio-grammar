@@ -73,7 +73,16 @@ passed directly to the executable, so file and installation paths are not
 interpolated into a shell command. Restart the language server after changing
 its executable or stdlib setting.
 
-The second client's check-on-save fallback and Rust-ism detector are still
-under review. Its blanket semicolon warning must not be carried over as a
+The second client's Rust-ism detector is still under review. Its blanket semicolon warning must not be carried over as a
 language rule. Its syntax snippets and epistemic UI also require explicit
 reconciliation before this preview replaces either in-tree extension.
+
+### Compiler diagnostics
+
+Check File saves a modified document before checking it. Check-on-save uses
+`sounio.checkOnSave` and works without LSP. Both invoke the selected compiler
+directly. Diagnostic parsing supports located compiler messages; process
+failures without a recognized diagnostic appear as a file-level error, with
+details in the Sounio Check output channel. Checks have a 60-second limit.
+Results from older document versions are discarded, and outstanding processes
+are cancelled when replaced or when their document closes.

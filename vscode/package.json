@@ -407,7 +407,7 @@
     "compile": "npm run grammar:sync && tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
-    "test": "npm run grammar:check && node test/grammar.cjs",
+    "test": "npm run grammar:check && npm run compile && node test/grammar.cjs && node test/diagnostics.cjs",
     "grammar:sync": "node ../scripts/sync-grammar.cjs",
     "grammar:check": "node ../scripts/sync-grammar.cjs --check"
   },
