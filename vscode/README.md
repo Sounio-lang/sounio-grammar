@@ -86,3 +86,14 @@ failures without a recognized diagnostic appear as a file-level error, with
 details in the Sounio Check output channel. Checks have a 60-second limit.
 Results from older document versions are discarded, and outstanding processes
 are cancelled when replaced or when their document closes.
+
+### Snippet migration
+
+The templates from both clients are retained. Identical bodies share one
+entry and keep their trigger aliases. Different bodies that used the same
+trigger are offered under `-alt` (for example `fn-alt`), avoiding ambiguous
+completion entries with the same trigger. The full mapping is recorded in
+`docs/snippet-reconciliation.json` at the repository root. These templates
+include experimental language features; their presence is not a capability
+claim for the installed compiler. In particular, a measurement template does
+not validate a scientific uncertainty model.

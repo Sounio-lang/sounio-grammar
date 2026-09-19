@@ -476,5 +476,200 @@
       "}"
     ],
     "description": "GPU execution block"
+  },
+  "Function with effect (ecosystem variant)": {
+    "prefix": "fn-alt",
+    "body": [
+      "fn ${1:name}(${2:params}) -> ${3:ReturnType} with ${4:IO} {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Function definition with effect annotation"
+  },
+  "Main function (ecosystem variant)": {
+    "prefix": "main-alt",
+    "body": [
+      "fn main() with IO {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Main entry point"
+  },
+  "Struct (ecosystem variant)": {
+    "prefix": "struct-alt",
+    "body": [
+      "struct ${1:Name} {",
+      "\t${2:field}: ${3:Type},",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Struct definition"
+  },
+  "Linear struct (ecosystem variant)": {
+    "prefix": "linear",
+    "body": [
+      "linear struct ${1:Name} {",
+      "\t${2:field}: ${3:Type},",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Linear (must-use) struct definition"
+  },
+  "Impl block (ecosystem variant)": {
+    "prefix": "impl-alt",
+    "body": [
+      "impl ${1:TypeName} {",
+      "\tfn ${2:method}(self: &${1:TypeName}${3:, ${4:param}: ${5:Type}}) -> ${6:ReturnType} with ${7:Pure} {",
+      "\t\t${0}",
+      "\t}",
+      "}"
+    ],
+    "description": "Impl block with method"
+  },
+  "Enum (ecosystem variant)": {
+    "prefix": "enum-alt",
+    "body": [
+      "enum ${1:Name} {",
+      "\t${2:Variant1},",
+      "\t${3:Variant2},",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Enum definition"
+  },
+  "Let binding (ecosystem variant)": {
+    "prefix": "let-alt",
+    "body": "let ${1:name}: ${2:Type} = ${0}",
+    "description": "Immutable binding"
+  },
+  "Var binding (ecosystem variant)": {
+    "prefix": "var-alt",
+    "body": "var ${1:name}: ${2:Type} = ${0}",
+    "description": "Mutable binding"
+  },
+  "If-else (ecosystem variant)": {
+    "prefix": "if-alt",
+    "body": [
+      "if ${1:condition} {",
+      "\t${2}",
+      "} else {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "If-else expression"
+  },
+  "For loop (ecosystem variant)": {
+    "prefix": "for-alt",
+    "body": [
+      "for ${1:item} in ${2:collection} {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "For-in loop"
+  },
+  "While loop (ecosystem variant)": {
+    "prefix": "while-alt",
+    "body": [
+      "while ${1:condition} {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "While loop"
+  },
+  "Match expression (ecosystem variant)": {
+    "prefix": "match-alt",
+    "body": [
+      "match ${1:value} {",
+      "\t${2:Pattern1} => ${3:result1},",
+      "\t${4:Pattern2} => ${5:result2},",
+      "\t_ => ${0}",
+      "}"
+    ],
+    "description": "Match expression"
+  },
+  "Knowledge measurement (ecosystem variant)": {
+    "prefix": "know",
+    "body": "let ${1:name}: Knowledge<${2:mg}> = measure(${3:value}, uncertainty: ${4:0.1})",
+    "description": "Measurement template; validate API and units against the selected compiler release"
+  },
+  "Module declaration (ecosystem variant)": {
+    "prefix": "module",
+    "body": [
+      "module ${1:name} {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Module declaration"
+  },
+  "Import (ecosystem variant)": {
+    "prefix": "import",
+    "body": "import ${1:module}::${0}",
+    "description": "Import statement"
+  },
+  "Type alias (ecosystem variant)": {
+    "prefix": "type-alt",
+    "body": "type ${1:Name} = ${0}",
+    "description": "Type alias"
+  },
+  "Refinement type (ecosystem variant)": {
+    "prefix": "tyref",
+    "body": "type ${1:Name} = { ${2:x}: ${3:f64} | ${4:x > 0} }",
+    "description": "Refinement type definition"
+  },
+  "Effect annotation (ecosystem variant)": {
+    "prefix": "with",
+    "body": "with ${1:IO, Alloc}",
+    "description": "Effect annotation clause"
+  },
+  "Unit declaration (ecosystem variant)": {
+    "prefix": "unit",
+    "body": "unit ${1:name};",
+    "description": "Unit of measure declaration"
+  },
+  "Trait definition (ecosystem variant)": {
+    "prefix": "trait-alt",
+    "body": [
+      "trait ${1:Name} {",
+      "\tfn ${2:method}(self: &Self) -> ${3:ReturnType} with ${4:Pure}",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Trait definition"
+  },
+  "Effect definition (ecosystem variant)": {
+    "prefix": "effect-alt",
+    "body": [
+      "effect ${1:Name} {",
+      "\tfn ${2:operation}(${3:params}) -> ${4:ReturnType}",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Algebraic effect definition"
+  },
+  "Handler block (ecosystem variant)": {
+    "prefix": "handler",
+    "body": [
+      "handler ${1:EffectName} {",
+      "\tfn ${2:operation}(${3:params}) -> ${4:ReturnType} {",
+      "\t\t${0}",
+      "\t}",
+      "}"
+    ],
+    "description": "Effect handler block"
+  },
+  "Linear struct with drop (ecosystem variant)": {
+    "prefix": "linearfull",
+    "body": [
+      "linear struct ${1:Name} {",
+      "\t${2:field}: ${3:Type},",
+      "}",
+      "",
+      "impl ${1:Name} {",
+      "\tfn drop(self: ${1:Name}) with ${4:IO} {",
+      "\t\t${0}",
+      "\t}",
+      "}"
+    ],
+    "description": "Linear struct with explicit drop implementation"
   }
 }
