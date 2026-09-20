@@ -106,3 +106,12 @@ A missing `jq` causes the server to exit before initialization. Install this
 prerequisite in the same environment where VS Code runs the extension (for
 example, the remote host for a remote workspace). The compiler CLI checks do
 not depend on a successfully initialized LSP.
+
+### Installed LSP smoke test
+
+With the compiler's `bin` directory and `jq` on PATH, run
+`python3 test/installed-lsp.py` from this directory on Linux. The test owns a
+temporary workspace and verifies initialize/shutdown, two document outline
+names, and keyword completion. It intentionally does not certify hover,
+rename, epistemic requests, diagnostic accuracy, or VS Code UI behavior.
+This is a real-compiler test, separate from the default fixture-based CI.
