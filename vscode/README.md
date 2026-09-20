@@ -115,3 +115,11 @@ temporary workspace and verifies initialize/shutdown, two document outline
 names, and keyword completion. It intentionally does not certify hover,
 rename, epistemic requests, diagnostic accuracy, or VS Code UI behavior.
 This is a real-compiler test, separate from the default fixture-based CI.
+
+### Epistemic panels
+
+Panels display available server data. Missing or malformed confidence and
+uncertainty values are shown as unavailable; zero remains a valid value.
+Source and provenance text are HTML-escaped. The client does not infer a
+95% confidence interval from a mean and standard deviation alone. These
+presentation checks do not validate the server's scientific model or claims.

@@ -1,3 +1,4 @@
+import { escapeHtml, confidenceValue, hasUncertainty } from './panelValues';
 import { createDiagnostics } from './diagnostics';
 import * as vscode from 'vscode';
 import {
@@ -568,7 +569,8 @@ function showConfidencePanel(result: any) {
         {}
     );
 
-    const confidence = result.confidence || 0;
+    const reportedConfidence = confidenceValue(result?.confidence);
+    const confidence = reportedConfidence ?? 0;
     const badge = confidence >= 0.95 ? '🟢' :
                   confidence >= 0.80 ? '🟡' :
                   confidence >= 0.60 ? '🟠' :
@@ -589,14 +591,14 @@ function showConfidencePanel(result: any) {
             </style>
         </head>
         <body>
-            <div class="badge">${badge}</div>
-            <div class="confidence">${(confidence * 100).toFixed(1)}%</div>
-            <div class="bar"><div class="fill" style="width: ${confidence * 100}%"></div></div>
+            <div class="badge">${reportedConfidence === undefined ? '?' : badge}</div>
+            <div class="confidence">${reportedConfidence === undefined ? 'Unavailable' : (confidence * 100).toFixed(1) + '%'}</div>
+            <div class="bar" ${reportedConfidence === undefined ? 'hidden' : ''}><div class="fill" style="width: ${confidence * 100}%"></div></div>
             <div class="details">
                 <h3>Source</h3>
-                <p>${result.source || 'Unknown'}</p>
+                <p>${escapeHtml(result?.source)}</p>
                 <h3>Revisability</h3>
-                <p>${result.revisability || 'Non-revisable'}</p>
+                <p>${escapeHtml(result?.revisability)}</p>
             </div>
         </body>
         </html>
@@ -612,12 +614,12 @@ function showProvenancePanel(result: any) {
         {}
     );
 
-    const chain = result.chain || [];
+    const chain = Array.isArray(result?.chain) ? result.chain : [];
     const chainHtml = chain.map((step: any) => `
         <div class="step">
             <span class="icon">→</span>
-            <span class="name">${step.name}</span>
-            <span class="type">${step.type}</span>
+            <span class="name">${escapeHtml(step?.name)}</span>
+            <span class="type">${escapeHtml(step?.type)}</span>
         </div>
     `).join('');
 
@@ -668,7 +670,7 @@ function showUncertaintyPanel(result: any) {
         </head>
         <body>
             <h2>Uncertainty Analysis</h2>
-            ${result.mean !== undefined ? `
+            ${hasUncertainty(result) ? `
                 <div class="metric">
                     <div class="label">Mean</div>
                     <div class="value">${result.mean.toFixed(6)}</div>
@@ -677,11 +679,8 @@ function showUncertaintyPanel(result: any) {
                     <div class="label">Standard Deviation</div>
                     <div class="value">± ${result.std.toFixed(6)}</div>
                 </div>
-                <div class="metric">
-                    <div class="label">95% Confidence Interval</div>
-                    <div class="value">[${(result.mean - 1.96 * result.std).toFixed(6)}, ${(result.mean + 1.96 * result.std).toFixed(6)}]</div>
-                </div>
-            ` : '<p>Deterministic value (no uncertainty)</p>'}
+
+            ` : '<p>Uncertainty information unavailable</p>'}
         </body>
         </html>
     `;
