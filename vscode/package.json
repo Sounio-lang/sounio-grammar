@@ -142,6 +142,11 @@
           "type": "boolean",
           "default": true,
           "description": "Start the language server on activation. Reload the window after changing this setting. CLI commands remain available when disabled."
+        },
+        "sounio.rustismDetector.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Warn about compiler-documented Rust syntax outside strings and comments."
         }
       }
     },
@@ -240,6 +245,10 @@
         "command": "sounio.showSignature",
         "title": "Sounio: Show Signature Help",
         "icon": "$(info)"
+      },
+      {
+        "command": "sounio.detectRustisms",
+        "title": "Sounio: Detect Rust-isms"
       }
     ],
     "keybindings": [
@@ -407,7 +416,7 @@
     "compile": "npm run grammar:sync && tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
-    "test": "npm run grammar:check && npm run compile && node test/grammar.cjs && node test/diagnostics.cjs && node test/panel-values.cjs",
+    "test": "npm run grammar:check && npm run compile && node test/grammar.cjs && node test/diagnostics.cjs && node test/panel-values.cjs && node test/rustisms.cjs",
     "grammar:sync": "node ../scripts/sync-grammar.cjs",
     "grammar:check": "node ../scripts/sync-grammar.cjs --check",
     "test:host": "npm run compile && node test/run-host.cjs"

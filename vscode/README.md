@@ -73,8 +73,8 @@ passed directly to the executable, so file and installation paths are not
 interpolated into a shell command. Restart the language server after changing
 its executable or stdlib setting.
 
-The second client's Rust-ism detector is still under review. Its blanket semicolon warning must not be carried over as a
-language rule. Its syntax snippets and epistemic UI also require explicit
+The syntax detector follows compiler rules E040, E041 and E043. Semicolons
+are not flagged. Its syntax snippets and epistemic UI also require explicit
 reconciliation before this preview replaces either in-tree extension.
 
 ### Compiler diagnostics
@@ -123,3 +123,13 @@ uncertainty values are shown as unavailable; zero remains a valid value.
 Source and provenance text are HTML-escaped. The client does not infer a
 95% confidence interval from a mean and standard deviation alone. These
 presentation checks do not validate the server's scientific model or claims.
+
+### Syntax detector reconciliation
+
+The Detect Rust-isms command and live diagnostics cover `let mut`, `&mut`,
+and tightly adjacent macro calls, based on parser E040/E041/E043 at Sounio
+commit cd56725193ae26717d81811009e9ed95a01d18fb. Strings, characters, line
+comments and nested block comments are excluded. This is an advisory scanner;
+compiler diagnostics remain authoritative. The previous detector's blanket
+semicolon/attribute/return-type warnings and whole-line automatic rewrites
+are not carried over without compiler evidence and precise edit validation.

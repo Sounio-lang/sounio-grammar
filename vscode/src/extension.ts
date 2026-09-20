@@ -1,3 +1,4 @@
+import { createRustismDetector } from './rustismDetector';
 import { escapeHtml, confidenceValue, hasUncertainty } from './panelValues';
 import { createDiagnostics } from './diagnostics';
 import * as vscode from 'vscode';
@@ -33,6 +34,7 @@ function runCompiler(name: string, args: string[]): void {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+    createRustismDetector(context);
     // Get server path from configuration
     const config = vscode.workspace.getConfiguration('sounio');
     const serverPath = compilerPath();
