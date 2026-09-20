@@ -1,0 +1,163 @@
+[
+  {
+    "source": "Function with effect",
+    "target": "Function with effect (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "fn",
+    "prefix": "fn-alt"
+  },
+  {
+    "source": "Main function",
+    "target": "Main function (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "main",
+    "prefix": "main-alt"
+  },
+  {
+    "source": "Struct",
+    "target": "Struct (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "struct",
+    "prefix": "struct-alt"
+  },
+  {
+    "source": "Linear struct",
+    "target": "Linear struct (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "linear",
+    "prefix": "linear"
+  },
+  {
+    "source": "Impl block",
+    "target": "Impl block (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "impl",
+    "prefix": "impl-alt"
+  },
+  {
+    "source": "Enum",
+    "target": "Enum (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "enum",
+    "prefix": "enum-alt"
+  },
+  {
+    "source": "Let binding",
+    "target": "Let binding (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "let",
+    "prefix": "let-alt"
+  },
+  {
+    "source": "Var binding",
+    "target": "Var binding (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "var",
+    "prefix": "var-alt"
+  },
+  {
+    "source": "If-else",
+    "target": "If-else (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "if",
+    "prefix": "if-alt"
+  },
+  {
+    "source": "For loop",
+    "target": "For loop (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "for",
+    "prefix": "for-alt"
+  },
+  {
+    "source": "While loop",
+    "target": "While loop (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "while",
+    "prefix": "while-alt"
+  },
+  {
+    "source": "Match expression",
+    "target": "Match expression (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "match",
+    "prefix": "match-alt"
+  },
+  {
+    "source": "Knowledge measurement",
+    "target": "Knowledge measurement (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "know",
+    "prefix": "know"
+  },
+  {
+    "source": "Module declaration",
+    "target": "Module declaration (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "module",
+    "prefix": "module"
+  },
+  {
+    "source": "Import",
+    "target": "Import (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "import",
+    "prefix": "import"
+  },
+  {
+    "source": "Type alias",
+    "target": "Type alias (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "type",
+    "prefix": "type-alt"
+  },
+  {
+    "source": "Refinement type",
+    "target": "Refinement type (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "tyref",
+    "prefix": "tyref"
+  },
+  {
+    "source": "Effect annotation",
+    "target": "Effect annotation (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "with",
+    "prefix": "with"
+  },
+  {
+    "source": "Unit declaration",
+    "target": "Unit declaration (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "unit",
+    "prefix": "unit"
+  },
+  {
+    "source": "Trait definition",
+    "target": "Trait definition (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "trait",
+    "prefix": "trait-alt"
+  },
+  {
+    "source": "Effect definition",
+    "target": "Effect definition (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "effect",
+    "prefix": "effect-alt"
+  },
+  {
+    "source": "Handler block",
+    "target": "Handler block (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "handler",
+    "prefix": "handler"
+  },
+  {
+    "source": "Linear struct with drop",
+    "target": "Linear struct with drop (ecosystem variant)",
+    "action": "preserve variant",
+    "old_prefix": "linearfull",
+    "prefix": "linearfull"
+  }
+]

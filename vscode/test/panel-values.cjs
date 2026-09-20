@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const {escapeHtml, confidenceValue, hasUncertainty} = require('../out/panelValues');
+assert.equal(escapeHtml('<img src="x">&'), '&lt;img src=&quot;x&quot;&gt;&amp;');
+assert.equal(escapeHtml(undefined), 'Unavailable');
+for (const value of [undefined, null, NaN, Infinity, -1, 2, '0.8']) assert.equal(confidenceValue(value), undefined);
+assert.equal(confidenceValue(0), 0);
+assert.equal(confidenceValue(1), 1);
+for (const value of [null, {}, {mean: 1}, {mean: 1,std: -1}, {mean: Infinity,std: 1}]) assert.equal(hasUncertainty(value), false);
+assert.equal(hasUncertainty({mean: 0,std: 0}), true);
+console.log('Panel values: missing, malformed, zero, and HTML escaping passed');
