@@ -97,3 +97,12 @@ completion entries with the same trigger. The full mapping is recorded in
 include experimental language features; their presence is not a capability
 claim for the installed compiler. In particular, a measurement template does
 not validate a scientific uncertainty model.
+
+### Preview LSP runtime prerequisites
+
+The distributed preview LSP is launched by `souc lsp --stdio` and requires
+`jq` on the extension host's PATH, in addition to the compiler distribution.
+A missing `jq` causes the server to exit before initialization. Install this
+prerequisite in the same environment where VS Code runs the extension (for
+example, the remote host for a remote workspace). The compiler CLI checks do
+not depend on a successfully initialized LSP.
