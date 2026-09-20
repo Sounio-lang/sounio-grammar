@@ -409,7 +409,8 @@
     "lint": "eslint src --ext ts",
     "test": "npm run grammar:check && npm run compile && node test/grammar.cjs && node test/diagnostics.cjs && node test/panel-values.cjs",
     "grammar:sync": "node ../scripts/sync-grammar.cjs",
-    "grammar:check": "node ../scripts/sync-grammar.cjs --check"
+    "grammar:check": "node ../scripts/sync-grammar.cjs --check",
+    "test:host": "npm run compile && node test/run-host.cjs"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
@@ -419,6 +420,7 @@
     "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
+    "@vscode/test-electron": "^3.1.0",
     "@vscode/vsce": "^3.9.1",
     "eslint": "^8.54.0",
     "ovsx": "^0.10.12",

@@ -17,6 +17,7 @@ jobs:
           cache-dependency-path: vscode/package-lock.json
       - run: npm ci
       - run: npm test
+      - run: xvfb-run -a npm run test:host
       - run: npm run compile
       - run: npx --no-install vsce package --out sounio-preview.vsix
       - uses: actions/upload-artifact@v4

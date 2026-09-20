@@ -1,0 +1,20 @@
+const assert = require('node:assert/strict');
+const vscode = require('vscode');
+exports.run = async function () {
+ const extension = vscode.extensions.getExtension('sounio-lang.sounio-vscode');
+ assert(extension, 'development extension is installed');
+ await extension.activate();
+ assert(extension.isActive);
+ const commands = await vscode.commands.getCommands(true);
+ for (const name of ['checkFile','runFile','showConfidence','showProvenance','showUncertainty']) assert(commands.includes('sounio.' + name), name);
+ const uri = vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, 'sample.sio');
+ const document = await vscode.workspace.openTextDocument(uri);
+ await vscode.window.showTextDocument(document);
+ assert.equal(document.languageId, 'sounio');
+ await vscode.commands.executeCommand('sounio.checkFile');
+ const deadline = Date.now() + 15000;
+ while (Date.now() < deadline && !vscode.languages.getDiagnostics(uri).some(d => d.message === 'fixture diagnostic')) await new Promise(r => setTimeout(r, 100));
+ const diagnostics = vscode.languages.getDiagnostics(uri);
+ assert(diagnostics.some(d => d.message === 'fixture diagnostic' && d.severity === vscode.DiagnosticSeverity.Error));
+ console.log('Extension host: activation, commands, language association, configured executable with spaces, and Problems diagnostic passed (fixture compiler).');
+};
